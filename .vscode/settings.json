@@ -1,0 +1,16 @@
+// canfeit will keep this file up to date, please back up your changes
+{
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "git.enableSmartCommit": true,
+  "git.ignoreLimitWarning": true,
+  "files.autoSave": "onFocusChange",
+  "editor.formatOnSave": true,
+  "editor.wordWrap": "on",
+  "python.formatting.provider": "yapf",
+  "python.pythonPath": "/miniconda3/bin/python",
+  "typescript.surveys.enabled": false,
+  "debug.node.autoAttach": "on"
+}

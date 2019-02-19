@@ -1,0 +1,132 @@
+{
+  "name": "app-starter",
+  "private": true,
+  "description": "A simple starter to get up and developing quickly with Gatsby",
+  "version": "0.1.0",
+  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "homepage": "https://github.com/canfeit/app-starter#readme",
+  "keywords": [
+    "gatsby"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/canfeit/app-starter"
+  },
+  "bugs": {
+    "url": "https://github.com/canfeit/app-starter/issues"
+  },
+  "build": {
+    "productName": "TestwaGen",
+    "appId": "com.testwa.desktop",
+    "copyright": "Copyright © 2019 testwa",
+    "mac": {
+      "target": "dmg"
+    },
+    "files": [
+      "common",
+      "main",
+      "public",
+      "server",
+      "package.json",
+      "!**/{LICENSE,LICENCE,license,*LICENSE,LICENSE*,CHANGELOG*,README*,AUTHORS,.gitmodules,.vscode,.yarnclean}"
+    ],
+    "extraResources": [
+      "static"
+    ]
+  },
+  "main": "main/index.js",
+  "scripts": {
+    "start": "concurrently \"npm run front\" \"npm run server -- --inspect-brk\" \"npm run proxy\" \"wait-on http://localhost:8000 && npm run desktop -- --inspect-brk\"",
+    "dir": "trash .cache dist public&&gatsby build&&npm run build -- -c.asar=false",
+    "build": "build --dir",
+    "release": "release-it -n&&gatsby build&&npm run build:all",
+    "build:all": "build -w --publish always&&build -ml --publish always&&npm run format&&yarn upgrade -L&&yarn",
+    "proxy": "node dev-proxy",
+    "front": "gatsby develop",
+    "server": "cd server&&cross-env testwa_port=7000 nodemon --experimental-modules .",
+    "desktop": "electron .",
+    "postinstall": "build install-app-deps",
+    "format": "prettier --write \"src/**/*.js\"",
+    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\"",
+    "prestart": "node -e console.log('#'.repeat(80)+'\\n\\n','docs:'+process.env.npm_package_homepage,'\\n\\n'+'#'.repeat(80))"
+  },
+  "dependencies": {
+    "electron-log": "^3.0.1",
+    "electron-updater": "^4.0.6",
+    "serve-handler": "^5.0.7",
+    "source-map-support": "^0.5.10"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^7.5.2",
+    "@commitlint/config-angular": "^7.5.0",
+    "@emotion/core": "^10.0.6",
+    "antd": "^3.12.4",
+    "babel-plugin-import": "^1.11.0",
+    "concurrently": "^4.1.0",
+    "conventional-changelog-cli": "^2.0.12",
+    "cross-env": "^5.2.0",
+    "dva-core": "next",
+    "dva-loading": "next",
+    "electron": "^4.0.2",
+    "electron-builder": "^20.38.5",
+    "electron-devtools-installer": "^2.2.4",
+    "gatsby": "^2.0.93",
+    "gatsby-image": "^2.0.27",
+    "gatsby-plugin-emotion": "^4.0.1",
+    "gatsby-plugin-manifest": "^2.0.13",
+    "gatsby-plugin-offline": "^2.0.21",
+    "gatsby-plugin-react-helmet": "^3.0.2",
+    "gatsby-plugin-sharp": "^2.0.18",
+    "gatsby-plugin-typography": "^2.2.5",
+    "gatsby-source-filesystem": "^2.0.17",
+    "gatsby-source-mongodb": "^2.0.10",
+    "gatsby-source-strapi": "0.0.6",
+    "gatsby-transformer-remark": "^2.2.0",
+    "gatsby-transformer-sharp": "^2.1.10",
+    "http-proxy": "^1.17.0",
+    "husky": "^1.3.1",
+    "immutable": "^4.0.0-rc.12",
+    "nodemon": "^1.18.9",
+    "prettier": "^1.16.1",
+    "prop-types": "^15.6.2",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-helmet": "^5.2.0",
+    "react-redux": "^6.0.0",
+    "react-typography": "^0.16.18",
+    "release-it": "^10.1.0",
+    "request": "^2.88.0",
+    "standard-version": "^4.4.0",
+    "trash-cli": "^1.4.0",
+    "typography": "^0.16.18",
+    "typography-theme-kirkham": "^0.16.18",
+    "wait-on": "^1.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "release-it": {
+    "increment": "conventional:angular",
+    "scripts": {
+      "beforeStart": "npm test",
+      "beforeStage": "npx conventional-changelog -p angular -i CHANGELOG.md -s"
+    },
+    "github": {
+      "release": true,
+      "draft": true,
+      "tokenRef": "GH_TOKEN"
+    },
+    "npm": {
+      "publish": false,
+      "publishPath": "."
+    },
+    "git": {
+      "commitArgs": "--no-verify",
+      "requireCleanWorkingDir": false,
+      "tagName": "v${version}"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+const proxy = require('http-proxy').createProxyServer()
+const { port } = require('./common/config')
+require('http')
+  .createServer(function(req, res) {
+    ;/^\/api\//.test(req.url)
+      ? proxy.web(req, res, { target: 'http://localhost:7000' })
+      : proxy.web(req, res, { target: 'http://localhost:8000' })
+  })
+  .listen(port, () => console.log('HTTP proxy running on', port))
+proxy.on('error', console.error)
